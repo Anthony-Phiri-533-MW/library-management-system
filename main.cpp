@@ -55,6 +55,112 @@ void admin(){
     
 }
 
+//title,author, ISBN, and availability status
+class Book {
+    private:
+        string title;
+        string author;
+        int ISBN;
+        int Status;
+    
+    public:
+        void setTitle(string Title){
+            title = Title;
+        }
+
+        void setAuthor(string Author){
+            author = Author;
+        }
+
+        void setISBN(int isbn){
+            ISBN = isbn;
+        }
+
+        void setAvailabilityStatus(int status){
+            Status = status;
+        }
+
+        string getTitle(string Title){
+            return title;
+        }
+
+        string getAuthor(string Author){
+            return author;
+        }
+
+        int getISBN(int isbn){
+            return ISBN;
+        }
+
+        int getAvailabilityStatus(int status){
+            return Status;
+        }
+};
+
+class User {
+    private:
+        string UserName;
+        string Password;
+
+    public:
+        void setUserName(string username){
+            UserName = username;
+        }
+
+        void setPassword(string password){
+            Password = password;
+        }
+
+        string getUserName(){
+            return UserName;
+        }
+
+        string getPassword(){
+            return Password;
+        }
+};
+
+class Member {
+    private:
+        string UserName;
+        string MembershipId;
+        string Email;
+        int PhoneNumber;
+
+    public:
+        void setUserName(string username){
+            UserName =  username;
+        }
+
+        void setMembershipId(string membershipid){
+            MembershipId = membershipid;
+        }
+
+        void setEmail(string email){
+            Email = email;
+        }
+
+        void setPhoneNumber(int phonenumber){
+            PhoneNumber = phonenumber;
+        }
+
+        string getUserName(){
+            return UserName;
+        }
+
+        string getMembershipId(){
+            return MembershipId;
+        }
+
+        string getEmail(){
+            return Email;
+        }
+
+        int getPhoneNumber(){
+            return PhoneNumber;
+        }
+};
+
 class Staff {
     public:
     void libraryStaffMenu(){
