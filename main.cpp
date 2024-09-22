@@ -1,10 +1,8 @@
-// C++ program to show difference between
-// definition and declaration of a 
-// variable
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
+#include <regex>
 
 using namespace std;
 
@@ -23,7 +21,6 @@ void write_csv_header(const string& filename) {
     ofstream file(filename);  // This will overwrite the file
     file << "Name,Passcode\n";
 }
-
 
 void admin(){
     cout << "\tEnter Your Name: \n\t";
@@ -162,20 +159,16 @@ class Member {
 };
 
 class Staff {
-    public:
-    void libraryStaffMenu(){
-        cout << "\tCreate Library User\n";
-        createLibraryUser();
-    }
-
     private:
+        string username;
+        string password;
     void createLibraryUser(){
         cout << "\tEnter a suitable username\n\t";
-        string username;
+        
         cin >> username;
 
         cout << "\tEnter a valid password\n\t";
-        string password;
+        
         cin >> password;
 
         cout << "Your password is " << password << " and your username is " << username;
@@ -184,6 +177,29 @@ class Staff {
             {username, password},
         };
         write_csv("LibraryStaff.csv", data);
+    }
+
+    public:
+
+    void setUsername(string UserName){
+        username = UserName;
+    }
+
+    void setPassword(string PassWord){
+        password = PassWord;
+    }
+
+    string getUsername(){
+        return username;
+    }
+
+    string getPassword(){
+        return password;
+    }
+
+    void libraryStaffMenu(){
+        cout << "\tCreate Library User\n";
+        createLibraryUser();
     }
 }; 
 
@@ -206,8 +222,7 @@ int main(){
             admin();
             break;
         case 2:
-            Staff staffobj;
-            staffobj.libraryStaffMenu();
+            cout << "\t staff section";
             break;
         case 3:
             cout << "\tYou are in Members section";
