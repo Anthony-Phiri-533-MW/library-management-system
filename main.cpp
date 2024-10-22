@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <cctype>
+#include <cstdlib>
 
 using namespace std;
 
@@ -64,13 +65,23 @@ public:
     }
 };
 
-class Student : public Staff
+class Member : public Staff
 {
 private:
+    string membershipID;
+    string name;
     int phone;
     string email;
 
 public:
+    void setName(string name){
+        this->name=name;
+    }
+
+    void setMembershipID(string membershipID){
+        this->membershipID=membershipID;
+    }
+
     void setPhone(int phone)
     {
         this->phone = phone;
@@ -210,8 +221,6 @@ void readBooks() {
         int ISBN;
         bool status;
         
-
-
         getline(ss, title, ',');
         getline(ss, author, ',');
         ss >> ISBN >> ws;
@@ -230,11 +239,68 @@ void readBooks() {
     file.close();
 }
 
+void writeMembersToFile(const string& name, const string& membershipID, int phone, const string& email) {
+    ofstream file("members.csv", ios::app); // open the file in append mode
+    if (!file) {
+        cerr << "Error opening file." << endl;
+        return;
+    }
+    
+    file << name << "," << membershipID << "," << phone << "," << email << "\n";
+    file.close();
+}
+
+void addMember(){
+
+    string membershipID;
+    string name;
+    int phone;
+    string email;
+
+    cout <<"Register a new member"<< endl;
+
+    cout<<"Enter their user name"<<endl;
+    cout<<"Do not use spaces, use hyphens"<<endl;
+    cin>>name;
+    //getline(cin,username);
+
+    Member memberObj1;
+
+    memberObj1.setName(name);
+
+    int id= 1 + (rand() % 6);
+
+    stringstream sstm;
+    sstm << name << id;
+    membershipID = sstm.str();
+
+    //memberObj1.setPassword(password);
+    //automatically generating mmbership ID
+    cout<<"membership id is "<<membershipID<<endl;
+
+    cout<<"Enter their phone number"<<endl;
+    cin>>phone;
+
+    memberObj1.setPhone(phone);
+
+    cout<<"Enter their email address"<<endl;
+    cin.ignore();
+    cin>>email;
+
+    memberObj1.setEmail(email);
+
+    writeMembersToFile(name,membershipID,phone,email);
+
+
+
+}
+
 void staffMenu(){
     cout<<"STAFF SECTION"<<endl;
     cout<<"1.Add books"<<endl;
     cout<<"2.View all books"<<endl;
-    cout<<"2.Register a member"<<endl;
+    cout<<"3.Register a member"<<endl;
+    cout<<"4.View all members"<<endl;
 
     int staffOption;
 
@@ -251,6 +317,11 @@ void staffMenu(){
     case 2:
     {
         readBooks();
+        break;
+    }
+    case 3:
+    {
+        addMember();
         break;
     }
     default:
@@ -276,13 +347,19 @@ void mainMenu()
         string password;
         string username;
 
+        Member staffObj;
+
         cout << "Staff login" << endl;
 
         cout << "Enter username" << endl;
         cin >> username;
 
+        staffObj.setName(username);
+
         cout << "Enter password" << endl;
         cin >> password;
+
+        staffObj.setPassword(password);
 
         if(stafflogin(username, password))
         {
@@ -302,13 +379,22 @@ void mainMenu()
         string password;
         string username;
 
+        Member memberObj;
+
         cout << "Member login" << endl;
 
         cout << "Enter username" << endl;
         cin >> username;
+        //cin.ignore();
+        //getline(cin,username);
 
         cout << "Enter password" << endl;
         cin >> password;
+        //cin.ignore();
+        //getline(cin,password);
+
+        memberObj.setPassword(password);
+        memberObj.setName(username);
 
         if(memberlogin(username, password))
         {
