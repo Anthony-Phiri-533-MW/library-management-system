@@ -179,7 +179,7 @@ void Book :: addBooks(const std::string& title, const std::string& author, const
     // Check if the file is open
     if (outFile.is_open()) {
         // Write book details to the file
-        outFile << title << "," << author << "," << ISBN << "," << (status ? "Available" : "Checked Out") << "\n";
+        outFile <<"\n" << title << "," << author << "," << ISBN << "," << status  << "\n";
         outFile.close(); // Close the file
     } else {
         std::cerr << "Error opening file!" << std::endl;
@@ -394,11 +394,10 @@ void staffMenu(){
     cin>>option;
     cin.ignore();
 
-    Member mObj1;
-
     switch (option) {
         case 1:
         {
+            Member mObj1;
             // Get user input for member registration
             std::cout << "\tEnter member name: ";
             
@@ -421,6 +420,24 @@ void staffMenu(){
         }
         case 2:
         {
+            Book bObj1;
+            std::string title, author, ISBN;
+            int status;
+            
+            std::cout << "Enter book title: ";
+            std::getline(std::cin, bObj1.title);
+            std::cout << "Enter author name: ";
+            std::getline(std::cin, bObj1.author);
+            std::cout << "Enter ISBN: ";
+            std::getline(std::cin, bObj1.ISBN);
+            std::cout << "Enter status (1 for Available, 0 for Checked Out): ";
+            std::cin >> bObj1.status;
+
+            bObj1.addBooks(bObj1.title, bObj1.author, bObj1.ISBN, bObj1.status);
+            
+            cout<<"Book added sucessfully"<<endl;
+            // View all books
+            //bObj1.viewAllBooks();
             break;
         }
         case 3:
@@ -431,10 +448,118 @@ void staffMenu(){
         }
         case 4:
         {
+            Member mObj2;
 
+            mObj2.viewAllMembers();
             break;
         }
     }
+}
+
+void memberMenu(){
+    cout<<"\tSelect task to perform"<<endl;
+    cout<<"\n";
+    cout<<"\t1.Borrow a Book\n\t2.Return a book\n\t3.view all books\n\t4.Search for a book\n\t5.check history"<<endl;
+
+    int option;
+    cin>>option;
+    cin.ignore();
+
+    switch(option){
+        case 1:
+        {
+            Book bObj5;
+            Member mObj7;
+            cout<<"Enter the ISBN of the Book You are interested to borrow"<<endl;
+            cin>>bObj5.ISBN;
+
+            cout<<"Enter the book titile"<<endl;
+            cin.ignore();
+            std::getline(std::cin, bObj5.title);
+
+            cout<<"Enter your name"<<endl;
+            //cin.ignore();
+            std::getline(std::cin, mObj7.name);
+
+            bObj5.status=0;
+
+            bObj5.changeStatus(bObj5.ISBN);
+            recordBorrowedBook(mObj7.name,bObj5.title,bObj5.status);
+
+            break;
+        }
+        case 2:
+        {
+            Book bObj6;
+            Member mObj8;
+            cout<<"Enter the ISBN of the Book You are want to return"<<endl;
+            cin>>bObj6.ISBN;
+
+            cout<<"Enter the book titile"<<endl;
+            cin.ignore();
+            std::getline(std::cin, bObj6.title);
+
+            cout<<"Enter your name"<<endl;
+            //cin.ignore();
+            std::getline(std::cin, mObj8.name);
+
+            bObj6.status=1;
+
+            bObj6.changeStatus(bObj6.ISBN);
+            recordBorrowedBook(mObj8.name,bObj6.title,bObj6.status);
+
+            break;
+        }
+        case 3:
+        {
+            Book bObj3;
+            bObj3.viewAllBooks();
+            break;
+        }
+        case 4:
+        {
+            Book bObj4;
+            cout<<"\n\tSelect the criteria to be used for searching"<<endl;
+            cout<<"\n\t1.By Author\n\t2.By ISBN\n\t3.By Title"<<endl;
+
+            int option;
+
+            cin>>option;
+
+            if(option == 1){
+                cin.ignore();
+                cout<<"\tEnter the authors name"<<endl;
+
+                std::getline(std::cin, bObj4.author);
+                bObj4.searchBookByAuthor(bObj4.author);
+            }else if(option == 2){
+                cin.ignore();
+                cout<<"\tEnter the book's ISBN"<<endl;
+
+                std::getline(std::cin, bObj4.ISBN);
+                bObj4.searchBookByAuthor(bObj4.ISBN);
+            }else if(option == 3){
+                cin.ignore();
+                cout<<"\tEnter the book's title"<<endl;
+
+                std::getline(std::cin, bObj4.title);
+                bObj4.searchBookByAuthor(bObj4.title);
+            }else{
+                cout<<"Invalid option selected"<<endl;
+            }
+            break;
+        }
+        case 5:
+        {
+            Member mObj9;
+            cout<<"Enter your name"<<endl;
+            cin>>mObj9.name;
+
+            mObj9.memberHistory(mObj9.name);
+            break;
+        }
+    }
+
 }
 
 void mainMenu(){
@@ -485,6 +610,7 @@ void mainMenu(){
 
             if (memberlogin(mObj.name, mObj.membershipID)){
                 cout<<"Login Successful"<<endl;
+                memberMenu();
             }else{
                 cout<<"Login Unsuccessful";
             }
@@ -496,7 +622,5 @@ void mainMenu(){
 }
 
 int main(){
-
-
     mainMenu();
 }
